@@ -30,6 +30,100 @@
     <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-K9L0ZFE1PJ');</script>
 
     <style>
+        /* --- CSS MÀN HÌNH KHÓA (MỚI THÊM) --- */
+        #password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            z-index: 999999; /* Đảm bảo nằm trên cùng */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+        }
+
+        .password-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+        }
+
+        .password-box h2 {
+            font-family: 'Great Vibes', cursive;
+            color: #d63031;
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .password-box p {
+            font-family: 'Dosis', sans-serif;
+            color: #636e72;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .password-box input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #fab1a0;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Dosis', sans-serif;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .password-box input:focus {
+            border-color: #d63031;
+        }
+
+        .password-box button {
+            background: #d63031;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Dosis', sans-serif;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .password-box button:hover {
+            transform: scale(1.05);
+            background: #ff7675;
+        }
+        
+        /* Hiệu ứng rung khi sai mật khẩu */
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        /* --- CSS CŨ CỦA BẠN --- */
         .love-counter-wrapper {
             display: flex;
             justify-content: center;
@@ -115,6 +209,15 @@
     var photoGalleries = [];
 </script>
 <body data-spy="scroll" data-target=".navbar-fixed-top" class="home-3">
+
+    <div id="password-overlay">
+        <div class="password-box">
+            <h2>Chỉ dành riêng cho Cẩm Tú</h2>
+            <p>Nhập ngày tháng sinh nhật của em để tiếp tục vào nha ❤️<br></p>
+            <input type="password" id="password-input" placeholder="Nhập vào đây nè...">
+            <button onclick="checkPassword()">oki</button>
+        </div>
+    </div>
     <div class="preloader-area">
         <div class="loader loader-13">
             <div class="css-heart heart1"></div>
@@ -418,7 +521,7 @@
                                                                                             <div class="col-sm-12">
                                 <div class="row">
                                     <div class="col-sm-6 col-xs-6">
-                                        <div class="story-lt-rt story-rt">
+                                        <div class="story-lt-rt story-lt">
                                             <div class="expand-story">
                                                 <div class="story-head wow fadeIn">
                                                     <h3>Anh chỉ muốn nói là</h3>
@@ -599,14 +702,6 @@
                             </div>
                                                                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    
-        
-                        </div>
-                    </div>
-                                    </div>
             </div>
         </div>
     </section>
@@ -872,6 +967,35 @@
     <script src="https://preview.iwedding.info/common/emoji-picker/js/insertTextAtCursor.js?v=20240713"></script>
     <script type="module" src="https://preview.iwedding.info/common/emoji-picker/js/init.js?v=20240713"></script>      
     <script type="text/javascript">
+        // --- LOGIC XỬ LÝ MẬT KHẨU (MỚI THÊM) ---
+        function checkPassword() {
+            var passwordInput = document.getElementById("password-input").value;
+            var passwordBox = document.querySelector(".password-box");
+            
+            // Mật khẩu là 1912 (19 tháng 12)
+            if (passwordInput === "1912" || passwordInput === "19/12") {
+                // Nếu đúng mật khẩu
+                var overlay = document.getElementById("password-overlay");
+                overlay.style.opacity = "0";
+                overlay.style.visibility = "hidden";
+                
+                // Tự động phát nhạc khi mở khóa thành công
+                var audioPlayer = document.querySelector('audio');
+                if(audioPlayer) {
+                    audioPlayer.play().catch(function(error) {
+                        console.log("Audio play failed: " + error);
+                    });
+                }
+            } else {
+                // Nếu sai mật khẩu: Rung lắc và hiện thông báo
+                passwordBox.classList.add("shake");
+                setTimeout(function(){
+                    passwordBox.classList.remove("shake");
+                }, 500);
+                alert("Sai rồi! Ngày sinh nhật của em mà cũng quên à? 🥺");
+            }
+        }
+
         window.onload = function() {
             
             // Thay đổi nội dung của "Click để phát nhạc"
